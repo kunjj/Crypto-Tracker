@@ -18,59 +18,59 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.example.cryptotracker.crpto.domain.Coin
 import com.example.cryptotracker.crpto.presentation.models.CoinUI
 import com.example.cryptotracker.crpto.presentation.models.toCoinUi
 import com.example.cryptotracker.ui.theme.CryptoTrackerTheme
-import com.example.cryptotracker.utils.Dimens
+import com.example.cryptotracker.core.presentation.util.Dimens
 
 @Composable
-fun CoinListItem(coinUI: CoinUI, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun CoinListItem(coin: CoinUI, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .clickable(onClick = onClick)
-            .padding(Dimens.paddingFifteen),
+            .padding(Dimens.paddingTwelve),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(Dimens.paddingFifteen)
     ) {
         val textColor = if (isSystemInDarkTheme()) Color.White else Color.Black
         Icon(
             modifier = modifier.size(Dimens.iconSizeEightyFive),
-            imageVector = ImageVector.vectorResource(id = coinUI.iconRes),
-            contentDescription = coinUI.name,
+            imageVector = ImageVector.vectorResource(id = coin.iconRes),
+            contentDescription = coin.name,
             tint = MaterialTheme.colorScheme.primary
         )
         Column(modifier = modifier.weight(1f)) {
             Text(
-                text = coinUI.symbol,
+                text = coin.symbol,
                 fontSize = Dimens.fontSizeTwenty,
                 color = textColor, fontWeight = FontWeight.Bold
             )
             Text(
-                text = coinUI.name,
+                text = coin.name,
                 fontSize = Dimens.fontSizeFourteen,
                 color = textColor, fontWeight = FontWeight.Light
             )
         }
         Column(horizontalAlignment = Alignment.End) {
             Text(
-                text = "$ ${coinUI.priceUsd.formatted}",
+                text = "$ ${coin.priceUsd.formatted}",
                 fontSize = Dimens.fontSizeSixteen,
                 color = textColor, fontWeight = FontWeight.Bold
             )
+
+            PriceChange(displayableNumber = coin.changeIn24Hrs)
         }
     }
 }
 
-@Preview
 @PreviewLightDark
 @Composable
 private fun CoinItemLitPreview() {
     CryptoTrackerTheme {
         CoinListItem(
-            coinUI = previewCoin,
+            coin = previewCoin,
             onClick = {},
             modifier = Modifier.background(MaterialTheme.colorScheme.background)
         )
@@ -84,5 +84,5 @@ internal val previewCoin = Coin(
     symbol = "BTC",
     marketCapUsd = 1241273958896.75,
     priceUsd = 62828.15,
-    changeIn24Hrs = -0.1
+    changeIn24Hrs = -0.17657
 ).toCoinUi()

@@ -3,7 +3,7 @@ package com.example.cryptotracker.crpto.presentation.models
 import android.icu.text.NumberFormat
 import androidx.annotation.DrawableRes
 import com.example.cryptotracker.crpto.domain.Coin
-import com.example.cryptotracker.utils.getDrawableIdForCoin
+import com.example.cryptotracker.core.presentation.util.getDrawableIdForCoin
 import java.util.Locale
 
 data class CoinUI(

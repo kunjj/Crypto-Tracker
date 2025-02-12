@@ -1,9 +1,17 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
-
 }
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+
 
 android {
     namespace = "com.example.cryptotracker"
@@ -23,11 +31,17 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", name = "BASE_URL", "${localProperties["BASE_URL"]}")
+            buildConfigField("String", name = "API_KEY", "${localProperties["API_KEY"]}")
+        }
         release {
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
+            buildConfigField("String", name = "BASE_URL", "${localProperties["BASE_URL"]}")
+            buildConfigField("String", name = "API_KEY", "${localProperties["API_KEY"]}")
         }
     }
     compileOptions {
@@ -38,6 +52,7 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     composeOptions {
@@ -51,7 +66,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
