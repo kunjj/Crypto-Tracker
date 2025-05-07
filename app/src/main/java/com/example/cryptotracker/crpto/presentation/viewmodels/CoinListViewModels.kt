@@ -5,23 +5,33 @@ import androidx.lifecycle.viewModelScope
 import com.example.cryptotracker.core.domain.util.onError
 import com.example.cryptotracker.core.domain.util.onSuccess
 import com.example.cryptotracker.crpto.domain.CoinDataSource
+import com.example.cryptotracker.crpto.presentation.crypto_list.CoinListEvent
 import com.example.cryptotracker.crpto.presentation.models.CoinListAction
 import com.example.cryptotracker.crpto.presentation.models.CoinListState
 import com.example.cryptotracker.crpto.presentation.models.toCoinUi
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CoinListViewModels(private val coinDataSource: CoinDataSource) : ViewModel() {
     private val _state = MutableStateFlow(CoinListState())
+    private val _event = Channel<CoinListEvent>()
+    val event = _event.receiveAsFlow()
 
-    val state: StateFlow<CoinListState>
-        get() = _state.onStart { getCoins() }
+    val state = _state.onStart { getCoins() }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), CoinListState())
+
+//    val state: StateFlow<CoinListState>
+//        get() = _state.asStateFlow()
+//
+//    init {
+//        getCoins()
+//    }
 
     private fun getCoins() {
         viewModelScope.launch {
@@ -32,12 +42,15 @@ class CoinListViewModels(private val coinDataSource: CoinDataSource) : ViewModel
                     it.copy(isLoading = false, coins = coins.map { coin -> coin.toCoinUi() })
                 }
             }
-                .onError { _state.update { it.copy(isLoading = false) } }
+                .onError { event ->
+                    _state.update { it.copy(isLoading = false) }
+                    _event.send(CoinListEvent.Error(event))
+                }
         }
     }
 
-    fun onAction(action: CoinListAction){
-        when(action){
+    fun onAction(action: CoinListAction) {
+        when (action) {
             is CoinListAction.OnCoinClick -> TODO()
             CoinListAction.OnSwipeRefresh -> getCoins()
         }

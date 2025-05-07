@@ -1,6 +1,7 @@
 package com.example.cryptotracker.core.presentation.util
 
-import com.example.cryptotracker.R
+import com.crypto.cryptotracker.R
+
 
 fun getDrawableIdForCoin(symbol: String): Int {
     return when (symbol.uppercase()) {

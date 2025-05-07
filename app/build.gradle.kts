@@ -15,11 +15,11 @@ if (localPropertiesFile.exists()) {
 
 
 android {
-    namespace = "com.example.cryptotracker"
+    namespace = "com.crypto.cryptotracker"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.cryptotracker"
+        applicationId = "com.crypto.cryptotracker"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

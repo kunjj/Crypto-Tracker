@@ -27,7 +27,7 @@ fun PriceChange(displayableNumber: DisplayableNumber, modifier: Modifier = Modif
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .clip(RoundedCornerShape(Dimens.roundedCornerHundred))
-            .background(backgroundColor)
+            .background(backgroundColor.copy(alpha = 0.45f))
             .padding(horizontal = Dimens.paddingFour)
     ) {
         Icon(

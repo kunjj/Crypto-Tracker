@@ -19,11 +19,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import com.example.cryptotracker.core.presentation.util.Dimens
 import com.example.cryptotracker.crpto.domain.Coin
 import com.example.cryptotracker.crpto.presentation.models.CoinUI
 import com.example.cryptotracker.crpto.presentation.models.toCoinUi
 import com.example.cryptotracker.ui.theme.CryptoTrackerTheme
-import com.example.cryptotracker.core.presentation.util.Dimens
 
 @Composable
 fun CoinListItem(coin: CoinUI, onClick: () -> Unit, modifier: Modifier = Modifier) {
@@ -35,11 +35,13 @@ fun CoinListItem(coin: CoinUI, onClick: () -> Unit, modifier: Modifier = Modifie
         horizontalArrangement = Arrangement.spacedBy(Dimens.paddingFifteen)
     ) {
         val textColor = if (isSystemInDarkTheme()) Color.White else Color.Black
+        val backGroundColor =
+            if (isSystemInDarkTheme()) Color.Green.copy(alpha = 0.5f) else MaterialTheme.colorScheme.primary
         Icon(
             modifier = modifier.size(Dimens.iconSizeEightyFive),
             imageVector = ImageVector.vectorResource(id = coin.iconRes),
             contentDescription = coin.name,
-            tint = MaterialTheme.colorScheme.primary
+            tint = backGroundColor
         )
         Column(modifier = modifier.weight(1f)) {
             Text(

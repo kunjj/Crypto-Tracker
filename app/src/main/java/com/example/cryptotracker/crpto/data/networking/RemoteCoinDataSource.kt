@@ -1,6 +1,7 @@
 package com.example.cryptotracker.crpto.data.networking
 
-import com.example.cryptotracker.BuildConfig
+
+import com.crypto.cryptotracker.BuildConfig
 import com.example.cryptotracker.core.data.safeCall
 import com.example.cryptotracker.core.domain.util.NetworkError
 import com.example.cryptotracker.core.domain.util.Result
