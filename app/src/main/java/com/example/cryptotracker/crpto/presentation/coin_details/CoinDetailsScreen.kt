@@ -26,7 +26,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import com.crypto.cryptotracker.R
+import com.example.cryptotracker.R
 import com.example.cryptotracker.core.presentation.util.Dimens
 import com.example.cryptotracker.crpto.presentation.coin_details.component.InfoCard
 import com.example.cryptotracker.crpto.presentation.crypto_list.components.previewCoin
@@ -44,6 +44,8 @@ fun CoinDetailsScreen(modifier: Modifier = Modifier, state: CoinListState) {
     ) { CircularProgressIndicator() }
     else if (state.selectedCoin != null) {
         val coin = state.selectedCoin
+        val backGroundColor =
+            if (isSystemInDarkTheme()) Color.Green else MaterialTheme.colorScheme.primary
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -56,7 +58,7 @@ fun CoinDetailsScreen(modifier: Modifier = Modifier, state: CoinListState) {
                 modifier = modifier.size(Dimens.iconSizeHundred),
                 imageVector = ImageVector.vectorResource(id = coin.iconRes),
                 contentDescription = coin.name,
-                tint = MaterialTheme.colorScheme.primary
+                tint = backGroundColor
             )
 
             Text(
@@ -92,7 +94,7 @@ fun CoinDetailsScreen(modifier: Modifier = Modifier, state: CoinListState) {
                 val contentColor = if (coin.changeIn24Hrs.value > 0.0) {
                     if (isSystemInDarkTheme()) Color.Green else greenBackground
                 } else {
-                    MaterialTheme.colorScheme.error
+                    Color.Red
                 }
 
                 InfoCard(

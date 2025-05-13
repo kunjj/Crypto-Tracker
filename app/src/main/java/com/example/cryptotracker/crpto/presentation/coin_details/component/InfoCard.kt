@@ -1,8 +1,8 @@
 package com.example.cryptotracker.crpto.presentation.coin_details.component
 
-import android.graphics.Paint.Align
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,8 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.crypto.cryptotracker.R
+import com.example.cryptotracker.R
 import com.example.cryptotracker.core.presentation.util.Dimens
 import com.example.cryptotracker.ui.theme.CryptoTrackerTheme
 
@@ -37,7 +36,8 @@ fun InfoCard(
     title: String,
     formattedValue: String,
     icon: ImageVector,
-    contentColor: Color = MaterialTheme.colorScheme.onSurface,
+    contentColor: Color =
+        if (isSystemInDarkTheme()) Color.Green else MaterialTheme.colorScheme.onSurface,
     formattedTextStyle: TextStyle = LocalTextStyle.current.copy(
         textAlign = TextAlign.Center, color = contentColor, fontSize = Dimens.fontSizeEighteen
     ),
@@ -52,7 +52,7 @@ fun InfoCard(
                 spotColor = MaterialTheme.colorScheme.primary
             ),
         shape = RectangleShape,
-        border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.primary),
+        border = BorderStroke(width = 1.dp, color = contentColor),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer,
             contentColor = contentColor

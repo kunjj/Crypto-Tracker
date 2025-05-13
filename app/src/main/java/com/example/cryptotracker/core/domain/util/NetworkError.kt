@@ -1,7 +1,7 @@
 package com.example.cryptotracker.core.domain.util
 
 import android.content.Context
-import com.crypto.cryptotracker.R
+import com.example.cryptotracker.R
 
 
 enum class NetworkError : Error {

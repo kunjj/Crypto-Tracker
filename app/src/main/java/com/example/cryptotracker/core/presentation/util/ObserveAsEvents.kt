@@ -17,12 +17,9 @@ fun <T> ObserveAsEvents(
     onEvent: (T) -> Unit
 ) {
     val lifeCycleOwner = LocalLifecycleOwner.current
-    LaunchedEffect(lifeCycleOwner.lifecycle) {
+    LaunchedEffect(key1 = lifeCycleOwner.lifecycle, key2 = key1, key3 = key2) {
         lifeCycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            withContext(Dispatchers.Main.immediate) {
-                events.collect { error -> onEvent(error) }
-            }
+            withContext(Dispatchers.Main.immediate) { events.collect { error -> onEvent(error) } }
         }
-
     }
 }
