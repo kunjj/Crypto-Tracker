@@ -26,7 +26,7 @@ import com.example.cryptotracker.crpto.presentation.models.toCoinUi
 import com.example.cryptotracker.ui.theme.CryptoTrackerTheme
 
 @Composable
-fun CoinListItem(coin: CoinUI, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun CoinListItem(coin: CoinUI, modifier: Modifier = Modifier,onClick: () -> Unit) {
     Row(
         modifier = modifier
             .clickable(onClick = onClick)
