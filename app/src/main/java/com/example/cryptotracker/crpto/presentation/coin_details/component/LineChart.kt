@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -21,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,7 +55,7 @@ fun LineChart(
 
     val measurer = rememberTextMeasurer()
 
-    val xLabelWidth by remember { mutableFloatStateOf(0f) }
+    var xLabelWidth by remember { mutableFloatStateOf(0f) }
 
     LaunchedEffect(xLabelWidth) { onXLabelWidthChanges(xLabelWidth) }
 
@@ -63,10 +65,10 @@ fun LineChart(
     val isShowingDataPoints by remember(selectedDataPoints) { mutableStateOf(selectedDataPoints != null) }
 
     Canvas(modifier = modifier.fillMaxSize()) {
-        val minYLabelSpacing = chartStyle.minYLabelSpacing.roundToPx()
-        val minXLabelSpacing = chartStyle.minXLabelSpacing.roundToPx()
-        val verticalPadding = chartStyle.verticalPadding.roundToPx()
-        val horizontalPadding = chartStyle.horizontalPadding.roundToPx()
+        val minYLabelSpacing = chartStyle.minYLabelSpacing.toPx()
+        val minXLabelSpacing = chartStyle.minXLabelSpacing.toPx()
+        val verticalPadding = chartStyle.verticalPadding.toPx()
+        val horizontalPadding = chartStyle.horizontalPadding.toPx()
 
 
         val xLabelTextLayoutResult = visibleDataPoints.map {
@@ -99,17 +101,22 @@ fun LineChart(
 
         drawRect(color = Color.Green, topLeft = graph.topLeft, size = graph.size)
 
+        xLabelWidth = maxXLabelWidth + minXLabelSpacing
+
         xLabelTextLayoutResult.forEachIndexed { index, textLayoutResult ->
             drawText(
                 textLayoutResult = textLayoutResult,
-                topLeft = Offset(x = viewPortLeft  + (3.5f * minXLabelSpacing * index), y = viewPortBottomY + minXLabelSpacing)
+                topLeft = Offset(
+                    x = viewPortLeft + (minXLabelSpacing / 2f) + (xLabelWidth * index),
+                    y = viewPortBottomY + minXLabelSpacing
+                )
             )
         }
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-@PreviewLightDark
+@Preview(widthDp = 1000)
 @Composable
 private fun LineChartPreview() {
     CryptoTrackerTheme {
@@ -129,7 +136,7 @@ private fun LineChartPreview() {
             axisLinesThickness = 5f,
             labelFontSize = 14.sp,
             minXLabelSpacing = 8.dp,
-            minYLabelSpacing = 8.dp,
+            minYLabelSpacing = 25.dp,
             verticalPadding = 8.dp,
             horizontalPadding = 8.dp,
         )
